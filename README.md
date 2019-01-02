@@ -1,2 +1,2 @@
-# FlutterV2EX
+# v2ex_flutter
 V2EX client on Flutter
