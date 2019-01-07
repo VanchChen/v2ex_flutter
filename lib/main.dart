@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/list_item.dart';
+import 'package:dio/dio.dart';
+import 'models/post.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,18 +29,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> _itemList = [
-    ListItemWidget(title: "aaa"),
-    ListItemWidget(title: "bbb"),
-    ListItemWidget(title: "ccc"),
-   ];
-/*
-  void _updateItemList() {
-    setState(() {
-      
-    });
+  List<Widget> _itemList = [];
+
+  Future<Null> _pullDownRefresh() async {
+    print('pull down');
+    Dio dio = Dio();
+    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/hot.json");
+    if (response.statusCode == 200) {
+      setState(() {
+        _itemList.clear();
+        response.data.forEach((map) => _itemList.add(ListItemWidget(post: Post.fromJson(map)))); 
+      });
+    }
   }
-*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +50,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: ListView.builder(
-          itemCount: _itemList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _itemList[index];
-          },
+        child: RefreshIndicator(
+          onRefresh: _pullDownRefresh,
+          child: ListView.builder(
+            itemCount: _itemList.length,
+            itemExtent: 44,
+            itemBuilder: (BuildContext context, int index) {
+              return _itemList[index];
+            },
+          ),
         ),
       ),
     );

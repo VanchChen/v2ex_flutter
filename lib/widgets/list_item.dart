@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../models/post.dart';
 
 class ListItemWidget extends StatefulWidget {
-  ListItemWidget({Key key, this.title}) : super(key: key);
+  ListItemWidget({Key key, @required this.post}) : super(key: key);
 
-  final String title;
+  final Post post;
 
   @override
   ListItemState createState() => ListItemState();
@@ -13,7 +14,7 @@ class ListItemState extends State<ListItemWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Card(child: Text(widget.title)),
+      title: Text(widget.post.title)
     );
   } 
 }
