@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<Null> _pullDownRefresh() async {
     print('pull down');
     Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/hot.json");
+    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/latest.json");
     if (response.statusCode == 200) {
       setState(() {
         _itemList.clear();
