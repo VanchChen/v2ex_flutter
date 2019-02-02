@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/post.dart';
+import '../pages/detailPage.dart';
 
 class ListItemWidget extends StatefulWidget {
   ListItemWidget({Key key, @required this.post}) : super(key: key);
@@ -11,10 +12,21 @@ class ListItemWidget extends StatefulWidget {
 }
 
 class ListItemState extends State<ListItemWidget> {
+  void didTap() {
+    print("tap $widget.post");
+
+    Navigator.push(context, 
+      new MaterialPageRoute(builder: (context) {
+        return new DetailPage();
+      })
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(widget.post.title)
+      title: Text(widget.post.title),
+      onTap: didTap,
     );
   } 
 }
