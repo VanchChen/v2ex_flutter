@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/list_item.dart';
+import '../widgets/listItem.dart';
 import 'package:dio/dio.dart';
-import '../models/post.dart';
+import '../models/topic.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     if (response.statusCode == 200) {
       setState(() {
         _itemList.clear();
-        response.data.forEach((map) => _itemList.add(ListItemWidget(post: Post.fromJson(map)))); 
+        response.data.forEach((map) => _itemList.add(ListItemWidget(topic: Topic.fromJson(map)))); 
       });
     }
   }
