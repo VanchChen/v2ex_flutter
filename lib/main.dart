@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'pages/homePage.dart';
 
-void main() => runApp(V2exApp());
+void main() {
+  debugPaintSizeEnabled = true;
+  runApp(V2exApp());
+} 
 
 class V2exApp extends StatelessWidget {
   @override

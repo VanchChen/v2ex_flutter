@@ -14,16 +14,17 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  Widget _titleItem;
   DetailItemWidget _topicItem;
   List<DetailItemWidget> _itemList = [];
 
   Future<Null> _refresh() async {
     Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/replies/show.json?topic_id=${widget.topic.id}");
+    Response<List> response = await dio.get("https://www.v2ex.com/api/replies/show.json?topic_id=${widget.topic.id}&p=1");
     if (response.statusCode == 200) {
       setState(() {
         _itemList.clear();
-        response.data.forEach((map) => _itemList.add(DetailItemWidget(title: Reply.fromJson(map).content))); 
+        response.data.forEach((map) => _itemList.add(DetailItemWidget(reply: Reply.fromJson(map)))); 
       });
     }
   }
@@ -32,7 +33,19 @@ class _DetailPageState extends State<DetailPage> {
   void initState() {
     super.initState();
 
-    _topicItem = DetailItemWidget(title: widget.topic.title);
+    _titleItem = Padding(
+      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+      child: Text(
+        widget.topic.title, 
+        textScaleFactor: 1.2,
+        style: TextStyle(
+          color: Colors.brown,
+          fontWeight: FontWeight.bold,
+        )
+      ),
+    );
+
+    _topicItem = DetailItemWidget(topic: widget.topic);
 
     _refresh();
   }
@@ -48,9 +61,12 @@ class _DetailPageState extends State<DetailPage> {
         child: RefreshIndicator(
           onRefresh: _refresh,
           child: ListView.separated(
-            itemCount: _itemList.length + 1,
+            itemCount: _itemList.length + 2,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
+                return _titleItem;
+              }
+              if (index == 1) {
                 return _topicItem;
               }
               return _itemList[index - 1];
