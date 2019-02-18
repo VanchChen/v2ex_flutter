@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/topic.dart';
 import '../models/reply.dart';
+import 'package:intl/intl.dart';
 
 class DetailItemWidget extends StatefulWidget {
   final Topic topic;
@@ -31,41 +32,45 @@ class DetailItemState extends State<DetailItemWidget> {
       avatar = widget.topic.avatar;
     }
 
+    var dateTime = DateTime.fromMicrosecondsSinceEpoch(date * 1000);
+    var dateString = DateFormat("yyyy-MM-dd HH:mm").format(dateTime);
+
     Container headerTitle = Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(userName, textAlign: TextAlign.left, textScaleFactor: 1.2),
-          Text("$date", textAlign: TextAlign.left, textScaleFactor: 0.8,)
+          Text("$dateString", textAlign: TextAlign.left, textScaleFactor: 0.8,)
         ],
       )
     );
     Container header = Container(
-      height: 44,
+      height: 40,
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 5, right: 5),
+            padding: EdgeInsets.only(left: 5, right: 10),
             child: CircleAvatar(
               radius: 19,
               backgroundImage: AssetImage('assets/icon.png'),
               backgroundColor: Colors.white,
             ),
           ),
-          headerTitle,
+          Expanded(child: headerTitle),
           Text("楼主")
         ],
       ),
     );
+    Widget divider = Divider(color: Colors.grey);
     return Container(
       padding: EdgeInsets.fromLTRB(20, 3, 20, 3),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           header,
+          divider,
           Text(content)
         ],
       )

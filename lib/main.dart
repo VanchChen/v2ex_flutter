@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'pages/homePage.dart';
 
 void main() {
-  debugPaintSizeEnabled = true;
+  debugPaintSizeEnabled = false;
   runApp(V2exApp());
 } 
 
