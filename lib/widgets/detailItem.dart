@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/topic.dart';
 import '../models/reply.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class DetailItemWidget extends StatefulWidget {
   final Topic topic;
@@ -18,6 +19,7 @@ class DetailItemState extends State<DetailItemWidget> {
   Widget build(BuildContext context) {
     String userName;
     int date;
+    int index;
     String content;
     String avatar;
     if (widget.reply != null) {
@@ -25,14 +27,16 @@ class DetailItemState extends State<DetailItemWidget> {
       date = widget.reply.last_modified;
       content = widget.reply.content_rendered;
       avatar = widget.reply.avatar;
+      index = widget.reply.index;
     } else {
       userName = widget.topic.username;
       date = widget.topic.last_modified;
       content = widget.topic.content_rendered;
       avatar = widget.topic.avatar;
+      index = 0;
     }
 
-    var dateTime = DateTime.fromMicrosecondsSinceEpoch(date * 1000);
+    var dateTime = DateTime.fromMillisecondsSinceEpoch(date * 1000);
     var dateString = DateFormat("yyyy-MM-dd HH:mm").format(dateTime);
 
     Container headerTitle = Container(
@@ -40,26 +44,38 @@ class DetailItemState extends State<DetailItemWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(userName, textAlign: TextAlign.left, textScaleFactor: 1.2),
-          Text("$dateString", textAlign: TextAlign.left, textScaleFactor: 0.8,)
+          Text(userName, textAlign: TextAlign.left, textScaleFactor: 1),
+          Text(
+            "$dateString", 
+            textAlign: TextAlign.left, 
+            textScaleFactor: 0.75,
+            style: TextStyle(
+              color: Colors.blueGrey
+            ),
+          )
         ],
       )
     );
     Container header = Container(
-      height: 40,
+      height: 30,
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Row(
         children: [
           Padding(
             padding: EdgeInsets.only(left: 5, right: 10),
             child: CircleAvatar(
-              radius: 19,
+              radius: 15,
               backgroundImage: AssetImage('assets/icon.png'),
               backgroundColor: Colors.white,
             ),
           ),
           Expanded(child: headerTitle),
-          Text("楼主")
+          Text(
+            index == 0 ? "楼主" : "$index 楼",
+            style: TextStyle(
+              color: Colors.blueGrey
+            ),
+          )
         ],
       ),
     );
@@ -71,10 +87,14 @@ class DetailItemState extends State<DetailItemWidget> {
         children: [
           header,
           divider,
-          Text(content)
+          Html(
+            data: content,
+            onLinkTap: (url) {
+              print("tap " +  url);
+            },
+          )
         ],
       )
     );
-    
   }
 }

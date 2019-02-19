@@ -1,4 +1,5 @@
 class Reply {
+  int          index;
   final int    id;
   final int    topic_id;
   final int    member_id;

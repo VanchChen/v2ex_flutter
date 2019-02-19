@@ -21,6 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   dio: ^1.0.13
   intl: ^0.15.7
+  flutter_html: ^0.9.4
 
 dev_dependencies:
   flutter_test:

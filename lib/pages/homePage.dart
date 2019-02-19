@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<Null> _refresh() async {
     Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/hot.json");
+    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/latest.json");
     if (response.statusCode == 200) {
       setState(() {
         _itemList.clear();

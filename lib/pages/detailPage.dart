@@ -24,7 +24,11 @@ class _DetailPageState extends State<DetailPage> {
     if (response.statusCode == 200) {
       setState(() {
         _itemList.clear();
-        response.data.forEach((map) => _itemList.add(DetailItemWidget(reply: Reply.fromJson(map)))); 
+        for (var i = 0; i < response.data.length; i++) {
+          var reply =  Reply.fromJson(response.data[i]);
+          reply.index = i + 1;
+          _itemList.add(DetailItemWidget(reply: reply)); 
+        }
       });
     }
   }
@@ -69,7 +73,7 @@ class _DetailPageState extends State<DetailPage> {
               if (index == 1) {
                 return _topicItem;
               }
-              return _itemList[index - 1];
+              return _itemList[index - 2];
             },
             separatorBuilder: (BuildContext context, int index) {
               return divider;
