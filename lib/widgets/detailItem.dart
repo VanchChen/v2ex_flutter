@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/topic.dart';
-import '../models/reply.dart';
-import 'package:intl/intl.dart';
+import 'package:v2ex_flutter/models/topic.dart';
+import 'package:v2ex_flutter/models/reply.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:v2ex_flutter/utils/date.dart';
 
 class DetailItemWidget extends StatefulWidget {
   final Topic topic;
@@ -36,8 +36,7 @@ class DetailItemState extends State<DetailItemWidget> {
       index = 0;
     }
 
-    var dateTime = DateTime.fromMillisecondsSinceEpoch(date * 1000);
-    var dateString = DateFormat("yyyy-MM-dd HH:mm").format(dateTime);
+    var dateString = Date.convertTimestamp2String(date);
 
     Container headerTitle = Container(
       child: Column(
