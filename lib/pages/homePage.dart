@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
   List<Widget> _itemList = [];
 
   Future<Null> _refresh() async {
@@ -30,7 +32,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    _refresh();
+    Future.delayed(Duration(milliseconds: 200)).then((_) {
+      _refreshIndicatorKey.currentState?.show();
+    });
   }
 
   @override
@@ -42,6 +46,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: RefreshIndicator(
+          key: _refreshIndicatorKey,
           onRefresh: _refresh,
           child: ListView.separated(
             itemCount: _itemList.length,

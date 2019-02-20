@@ -1,6 +1,8 @@
 class Topic {
   final int    id;
   final int    node_id;
+  final String node_name;
+  final String node_title;
   final int    member_id;
   final String avatar;
   final String username;
@@ -15,6 +17,8 @@ class Topic {
   Topic.fromJson(Map<String, dynamic> json)
     : id = json['id'],
       node_id = json['node']['id'],
+      node_name = json['node']['name'],
+      node_title = json['node']['title'],
       member_id = json['member']['id'],
       avatar = json['member']['avatar_normal'],
       username = json['member']['username'],

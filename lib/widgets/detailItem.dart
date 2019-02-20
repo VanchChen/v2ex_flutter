@@ -47,16 +47,16 @@ class DetailItemState extends State<DetailItemWidget> {
           Text(
             "$dateString", 
             textAlign: TextAlign.left, 
-            textScaleFactor: 0.75,
+            textScaleFactor: 0.7,
             style: TextStyle(
-              color: Colors.blueGrey
+              color: Colors.grey
             ),
           )
         ],
       )
     );
     Container header = Container(
-      height: 30,
+      height: 32,
       constraints: BoxConstraints(minWidth: double.infinity),
       child: Row(
         children: [
@@ -72,7 +72,7 @@ class DetailItemState extends State<DetailItemWidget> {
           Text(
             index == 0 ? "楼主" : "$index 楼",
             style: TextStyle(
-              color: Colors.blueGrey
+              color: Colors.grey
             ),
           )
         ],

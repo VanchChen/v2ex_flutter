@@ -14,13 +14,15 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
   Widget _titleItem;
   DetailItemWidget _topicItem;
   List<DetailItemWidget> _itemList = [];
 
   Future<Null> _refresh() async {
     Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/replies/show.json?topic_id=${widget.topic.id}&p=1");
+    Response<List> response = await dio.get("https://www.v2ex.com/api/replies/show.json?topic_id=${widget.topic.id}");
     if (response.statusCode == 200) {
       setState(() {
         _itemList.clear();
@@ -51,7 +53,9 @@ class _DetailPageState extends State<DetailPage> {
 
     _topicItem = DetailItemWidget(topic: widget.topic);
 
-    _refresh();
+    Future.delayed(Duration(milliseconds: 200)).then((_) {
+      _refreshIndicatorKey.currentState?.show();
+    });
   }
 
   @override
@@ -63,6 +67,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: Center(
         child: RefreshIndicator(
+          key: _refreshIndicatorKey,
           onRefresh: _refresh,
           child: ListView.separated(
             itemCount: _itemList.length + 2,
