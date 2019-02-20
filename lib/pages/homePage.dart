@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
               if (index == 0) {
                 return header;
               }
-              if (index == _itemList.length) {
+              if (index == _itemList.length + 1) {
                 return footer;
               }
               return _itemList[index - 1];
