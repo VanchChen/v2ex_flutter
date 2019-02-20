@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/listItem.dart';
-import 'package:dio/dio.dart';
-import '../models/topic.dart';
+import 'package:v2ex_flutter/widgets/listItem.dart';
+import 'package:v2ex_flutter/controllers/request.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -18,14 +17,11 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _itemList = [];
 
   Future<Null> _refresh() async {
-    Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/latest.json");
-    if (response.statusCode == 200) {
-      setState(() {
-        _itemList.clear();
-        response.data.forEach((map) => _itemList.add(ListItemWidget(topic: Topic.fromJson(map)))); 
-      });
-    }
+    var _dataList = await Request.latestList();
+    setState(() {
+      _itemList.clear();
+      _dataList.forEach((map) => _itemList.add(ListItemWidget(topic: map))); 
+    });
   }
 
   @override
@@ -40,6 +36,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Widget divider = Divider(color: Colors.grey);
+    Widget header = Container(height: 20);
+    Widget footer = Container(height: 20);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -49,9 +47,15 @@ class _HomePageState extends State<HomePage> {
           key: _refreshIndicatorKey,
           onRefresh: _refresh,
           child: ListView.separated(
-            itemCount: _itemList.length,
+            itemCount: _itemList.length + 2,
             itemBuilder: (BuildContext context, int index) {
-              return _itemList[index];
+              if (index == 0) {
+                return header;
+              }
+              if (index == _itemList.length) {
+                return footer;
+              }
+              return _itemList[index - 1];
             },
             separatorBuilder: (BuildContext context, int index) {
               return divider;

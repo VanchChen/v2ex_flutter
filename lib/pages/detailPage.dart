@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import '../models/topic.dart';
 import '../models/reply.dart';
 import '../widgets/detailItem.dart';
+import '../controllers/request.dart';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key, this.topic}) : super(key: key);
@@ -21,18 +21,12 @@ class _DetailPageState extends State<DetailPage> {
   List<DetailItemWidget> _itemList = [];
 
   Future<Null> _refresh() async {
-    Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/replies/show.json?topic_id=${widget.topic.id}");
-    if (response.statusCode == 200) {
-      setState(() {
-        _itemList.clear();
-        for (var i = 0; i < response.data.length; i++) {
-          var reply =  Reply.fromJson(response.data[i]);
-          reply.index = i + 1;
-          _itemList.add(DetailItemWidget(reply: reply)); 
-        }
-      });
-    }
+    var _dataList = await Request.topicReplyList(widget.topic.id);
+    
+    setState(() {
+      _itemList.clear();
+      _dataList.forEach((map) => _itemList.add(DetailItemWidget(reply: map)));
+    });
   }
 
   @override
@@ -61,6 +55,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     Widget divider = Divider(color: Colors.grey);
+    Widget footer = Container(height: 20);
     return Scaffold(
       appBar: AppBar(
         title: Text("主题"),
@@ -70,13 +65,16 @@ class _DetailPageState extends State<DetailPage> {
           key: _refreshIndicatorKey,
           onRefresh: _refresh,
           child: ListView.separated(
-            itemCount: _itemList.length + 2,
+            itemCount: _itemList.length + 3,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return _titleItem;
               }
               if (index == 1) {
                 return _topicItem;
+              }
+              if (index == _itemList.length + 2) {
+                return footer;
               }
               return _itemList[index - 2];
             },

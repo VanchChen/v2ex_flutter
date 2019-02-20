@@ -15,3 +15,34 @@ https://www.v2ex.com/api/nodes/all.json 所有节点
 
 */
 
+import 'package:dio/dio.dart';
+import 'package:v2ex_flutter/models/topic.dart';
+import 'package:v2ex_flutter/models/reply.dart';
+
+class Request {
+  static Future<List> latestList() async {
+    Dio dio = Dio();
+    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/latest.json");
+    if (response.statusCode == 200) {
+        var list = [];
+        response.data.forEach((map) => list.add(Topic.fromJson(map))); 
+        return list;
+    }
+    return [];
+  }
+
+  static Future<List> topicReplyList(int topicID) async {
+    Dio dio = Dio();
+    Response<List> response = await dio.get("https://www.v2ex.com/api/replies/show.json?topic_id=$topicID");
+    if (response.statusCode == 200) {
+        var list = [];
+        for (var i = 0; i < response.data.length; i++) {
+          var reply =  Reply.fromJson(response.data[i]);
+          reply.index = i + 1;
+          list.add(reply);
+        }
+        return list;
+    }
+    return [];
+  }
+}
