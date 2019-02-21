@@ -14,7 +14,7 @@ class Reply {
     : id = json['id'],
       topic_id = json['topic_id'],
       member_id = json['member_id'],
-      avatar = json['member']['avatar_normal'],
+      avatar = "https:" + json['member']['avatar_normal'],
       username = json['member']['username'],
       content = json['content'],
       content_rendered = json['content_rendered'],

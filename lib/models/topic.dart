@@ -20,7 +20,7 @@ class Topic {
       node_name = json['node']['name'],
       node_title = json['node']['title'],
       member_id = json['member']['id'],
-      avatar = json['member']['avatar_normal'],
+      avatar = "https:" + json['member']['avatar_normal'],
       username = json['member']['username'],
       title = json['title'],
       url = json['url'],

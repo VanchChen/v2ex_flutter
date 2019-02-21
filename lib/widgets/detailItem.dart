@@ -3,6 +3,7 @@ import 'package:v2ex_flutter/models/topic.dart';
 import 'package:v2ex_flutter/models/reply.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:v2ex_flutter/utils/date.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DetailItemWidget extends StatefulWidget {
   final Topic topic;
@@ -64,7 +65,7 @@ class DetailItemState extends State<DetailItemWidget> {
             padding: EdgeInsets.only(left: 5, right: 10),
             child: CircleAvatar(
               radius: 15,
-              backgroundImage: AssetImage('assets/icon.png'),
+              backgroundImage: CachedNetworkImageProvider(avatar),
               backgroundColor: Colors.white,
             ),
           ),

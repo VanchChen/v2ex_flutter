@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/topic.dart';
-import '../models/reply.dart';
 import '../widgets/detailItem.dart';
 import '../controllers/request.dart';
 
