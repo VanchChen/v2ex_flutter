@@ -4,6 +4,7 @@ import 'package:v2ex_flutter/models/reply.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:v2ex_flutter/utils/date.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:v2ex_flutter/pages/webPage.dart';
 
 class DetailItemWidget extends StatefulWidget {
   final Topic topic;
@@ -90,7 +91,13 @@ class DetailItemState extends State<DetailItemWidget> {
           Html(
             data: content,
             onLinkTap: (url) {
-              print("tap " +  url);
+              if (url.startsWith("http")) {
+                Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) {
+                    return WebPage(url: url);
+                  })
+                );
+              }
             },
           )
         ],
