@@ -23,10 +23,10 @@ class ListItemState extends State<ListItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var hintString = widget.topic.node_title + "  ";
+    var hintString = widget.topic.nodeTitle + "  ";
     hintString += widget.topic.username + "  ";
     var replyString = "${widget.topic.replies}条回复";
-    replyString += "  " + Date.convertTimestamp2String(widget.topic.last_modified);
+    replyString += "  " + Date.convertTimestamp2String(widget.topic.lastModified);
 
     return GestureDetector(
       onTap: didTap,

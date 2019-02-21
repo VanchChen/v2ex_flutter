@@ -25,14 +25,14 @@ class DetailItemState extends State<DetailItemWidget> {
     String avatar;
     if (widget.reply != null) {
       userName = widget.reply.username;
-      date = widget.reply.last_modified;
-      content = widget.reply.content_rendered;
+      date = widget.reply.lastModified;
+      content = widget.reply.contentRendered;
       avatar = widget.reply.avatar;
       index = widget.reply.index;
     } else {
       userName = widget.topic.username;
-      date = widget.topic.last_modified;
-      content = widget.topic.content_rendered;
+      date = widget.topic.lastModified;
+      content = widget.topic.contentRendered;
       avatar = widget.topic.avatar;
       index = 0;
     }
