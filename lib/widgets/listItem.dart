@@ -32,7 +32,8 @@ class ListItemState extends State<ListItemWidget> {
       onTap: didTap,
       behavior: HitTestBehavior.translucent,
       child: Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+        color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -58,8 +59,7 @@ class ListItemState extends State<ListItemWidget> {
                   ),
                 ),
               ],
-            ),
-            Divider(color: Colors.grey)
+            )
           ],
         ),
       ),
