@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:v2ex_flutter/widgets/listItem.dart';
 import 'package:v2ex_flutter/controllers/request.dart';
+import 'package:v2ex_flutter/models/topic.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -14,13 +15,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
-  List<Widget> _itemList = [];
+  List _itemList = [];
 
   Future<Null> _refresh() async {
     var _dataList = await Request.latestList();
     setState(() {
-      _itemList.clear();
-      _dataList.forEach((map) => _itemList.add(ListItemWidget(topic: map))); 
+      _itemList =_dataList;
     });
   }
 
@@ -35,7 +35,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget divider = Divider(color: Colors.grey);
     Widget header = Container(height: 20);
     Widget footer = Container(height: 20);
     return Scaffold(
@@ -46,7 +45,9 @@ class _HomePageState extends State<HomePage> {
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _refresh,
-          child: ListView.separated(
+          //ListView生成全部 ListView.builder只生成visible
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: _itemList.length + 2,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
@@ -55,12 +56,9 @@ class _HomePageState extends State<HomePage> {
               if (index == _itemList.length + 1) {
                 return footer;
               }
-              return _itemList[index - 1];
+              return ListItemWidget(topic: _itemList[index - 1]);
             },
-            separatorBuilder: (BuildContext context, int index) {
-              return divider;
-            },
-          ),
+          )
         ),
       ),
     );

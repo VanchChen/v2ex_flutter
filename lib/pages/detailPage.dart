@@ -17,14 +17,13 @@ class _DetailPageState extends State<DetailPage> {
 
   Widget _titleItem;
   DetailItemWidget _topicItem;
-  List<DetailItemWidget> _itemList = [];
+  List _itemList = [];
 
   Future<Null> _refresh() async {
     var _dataList = await Request.topicReplyList(widget.topic.id);
     
     setState(() {
-      _itemList.clear();
-      _dataList.forEach((map) => _itemList.add(DetailItemWidget(reply: map)));
+      _itemList = _dataList;
     });
   }
 
@@ -53,7 +52,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget divider = Divider(color: Colors.grey);
     Widget footer = Container(height: 20);
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +61,7 @@ class _DetailPageState extends State<DetailPage> {
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _refresh,
-          child: ListView.separated(
+          child: ListView.builder(
             itemCount: _itemList.length + 3,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
@@ -75,10 +73,7 @@ class _DetailPageState extends State<DetailPage> {
               if (index == _itemList.length + 2) {
                 return footer;
               }
-              return _itemList[index - 2];
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return divider;
+              return DetailItemWidget(reply: _itemList[index - 2]);
             },
           ),
         )

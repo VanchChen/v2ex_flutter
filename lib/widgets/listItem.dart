@@ -58,7 +58,8 @@ class ListItemState extends State<ListItemWidget> {
                   ),
                 ),
               ],
-            )
+            ),
+            Divider(color: Colors.grey)
           ],
         ),
       ),
