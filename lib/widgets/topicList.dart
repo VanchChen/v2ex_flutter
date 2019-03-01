@@ -10,11 +10,20 @@ class TopicList extends StatefulWidget {
 
   final int nodeID;
 
+  final ScrollController _scrollController = ScrollController();
+
+  void scrollToTop () {
+    _scrollController.jumpTo(0);
+  }
+
   @override
   _TopicListState createState() => _TopicListState();
 }
 
-class _TopicListState extends State<TopicList> {
+class _TopicListState extends State<TopicList> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   List _itemList = [];
@@ -46,13 +55,15 @@ class _TopicListState extends State<TopicList> {
   @override 
   Widget build(BuildContext context) {
     Widget stuff = Container(height: 2);
-    return RefreshIndicator(
-      key: _refreshIndicatorKey,
-      onRefresh: _refresh,
-      //ListView生成全部 ListView.builder只生成visible
-      child: Container(
-        color: Color(0xFFE8E8E8),
+    
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        //ListView生成全部 ListView.builder只生成visible
         child: ListView.builder(
+          controller: widget._scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: _itemList.length + 2,
           itemBuilder: (BuildContext context, int index) {
@@ -67,7 +78,7 @@ class _TopicListState extends State<TopicList> {
               child: ListItemWidget(topic: _itemList[index - 1]),
             );
           },
-        ),
+        )
       )
     );
   }

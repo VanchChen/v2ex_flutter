@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _pageController = PageController();
   var _selectedIndex = 0;
   var _tabList = [
     Node(id: TopicList.TopicHot, title: "热门"), 
@@ -29,6 +30,11 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 _selectedIndex = index;
               });
+              _pageController.animateToPage(
+                _selectedIndex, 
+                duration: Duration(milliseconds: 400), 
+                curve: Curves.easeOut
+              );
             }
           },
           child: Text(
@@ -45,11 +51,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<TopicList> _tabPageList = _tabList.map((node) => TopicList(nodeID: node.id)).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
+        color: Color(0xFFE8E8E8),
         child: Column(
           children: <Widget>[
             Container(
@@ -57,8 +66,19 @@ class _HomePageState extends State<HomePage> {
               child: titleList(),
             ),
             Flexible(
-              child: TopicList(nodeID: _tabList[_selectedIndex].id),
-            ),
+              child: PageView(
+                controller: _pageController,
+                scrollDirection: Axis.horizontal,
+                children: _tabPageList,
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+
+                  _tabPageList[_selectedIndex].scrollToTop();
+                },
+              )
+            )
           ],
         )
       ),
