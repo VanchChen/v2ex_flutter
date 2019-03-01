@@ -1,6 +1,4 @@
 /*
-https://www.v2ex.com/api/topics/hot.json 最热
-https://www.v2ex.com/api/topics/latest.json 全部最新
 https://www.v2ex.com/api/nodes/show.json?name=python  node_id 节点信息
 
 用户主页
@@ -20,6 +18,17 @@ import 'package:v2ex_flutter/models/topic.dart';
 import 'package:v2ex_flutter/models/reply.dart';
 
 class Request {
+  static Future<List> hotList() async {
+    Dio dio = Dio();
+    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/hot.json");
+    if (response.statusCode == 200) {
+        var list = [];
+        response.data.forEach((map) => list.add(Topic.fromJson(map))); 
+        return list;
+    }
+    return [];
+  } 
+
   static Future<List> latestList() async {
     Dio dio = Dio();
     Response<List> response = await dio.get("https://www.v2ex.com/api/topics/latest.json");
@@ -27,6 +36,17 @@ class Request {
         var list = [];
         response.data.forEach((map) => list.add(Topic.fromJson(map))); 
         return list;
+    }
+    return [];
+  }
+
+  static Future<List> topicList(int nodeID) async {
+    Dio dio = Dio();
+    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/show.json?node_id=$nodeID");
+    if (response.statusCode == 200) {
+        //var list = [];
+        //response.data.forEach((map) => list.add(Topic.fromJson(map))); 
+        //return list;
     }
     return [];
   }

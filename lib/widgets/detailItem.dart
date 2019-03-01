@@ -82,7 +82,7 @@ class DetailItemState extends State<DetailItemWidget> {
     );
     Widget divider = Divider(color: Colors.grey);
     return Container(
-      color: index % 2 == 0 ? Colors.white : Color(0xFFE8E8E8),
+      color: index % 2 == 0 ? Colors.white : Color(0xFFF5F5F5),
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

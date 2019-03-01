@@ -21,46 +21,52 @@ class ListItemState extends State<ListItemWidget> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Column contentColumn() {
     var hintString = widget.topic.nodeTitle + "  ";
     hintString += widget.topic.username + "  ";
     var replyString = "${widget.topic.replies}条回复";
     replyString += "  " + Date.convertTimestamp2String(widget.topic.lastModified);
 
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          widget.topic.title, 
+          textScaleFactor: 1.1,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              hintString, 
+              textScaleFactor: 0.8,
+              style: TextStyle(
+                color: Colors.blueGrey
+              ),
+            ),
+            Text(
+              replyString, 
+              textScaleFactor: 0.7,
+              style: TextStyle(
+                color: Colors.grey
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: didTap,
       behavior: HitTestBehavior.translucent,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+      child: Card(
         color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              widget.topic.title, 
-              textScaleFactor: 1.1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  hintString, 
-                  textScaleFactor: 0.8,
-                  style: TextStyle(
-                    color: Colors.blueGrey
-                  ),
-                ),
-                Text(
-                  replyString, 
-                  textScaleFactor: 0.7,
-                  style: TextStyle(
-                    color: Colors.grey
-                  ),
-                ),
-              ],
-            )
-          ],
+        child: Container(
+          padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
+          child: contentColumn(),
         ),
       ),
     );

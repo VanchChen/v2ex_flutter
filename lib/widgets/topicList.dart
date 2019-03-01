@@ -3,10 +3,12 @@ import 'package:v2ex_flutter/widgets/listItem.dart';
 import 'package:v2ex_flutter/controllers/request.dart';
 
 class TopicList extends StatefulWidget {
-  TopicList({Key key, this.topicID, this.topicName}) : super(key: key);
+  static const int TopicHot = -1;
+  static const int TopicLatest = -2;
 
-  final int topicID;
-  final String topicName;
+  TopicList({Key key, this.nodeID}) : super(key: key);
+
+  final int nodeID;
 
   @override
   _TopicListState createState() => _TopicListState();
@@ -18,7 +20,15 @@ class _TopicListState extends State<TopicList> {
   List _itemList = [];
 
   Future<Null> _refresh() async {
-    var _dataList = await Request.latestList();
+    var _dataList;
+    if (widget.nodeID == TopicList.TopicHot) {
+      _dataList = await Request.hotList();
+    } else if (widget.nodeID == TopicList.TopicLatest) {
+      _dataList = await Request.latestList();
+    } else if (widget.nodeID > 0) {
+      _dataList = await Request.topicList(widget.nodeID);
+    }
+
     setState(() {
       _itemList =_dataList;
     });
@@ -35,7 +45,7 @@ class _TopicListState extends State<TopicList> {
 
   @override 
   Widget build(BuildContext context) {
-    Widget stuff = Container(height: 5);
+    Widget stuff = Container(height: 2);
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
@@ -52,7 +62,10 @@ class _TopicListState extends State<TopicList> {
             if (index == _itemList.length + 1) {
               return stuff;
             }
-            return ListItemWidget(topic: _itemList[index - 1]);
+            return Container(
+              padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+              child: ListItemWidget(topic: _itemList[index - 1]),
+            );
           },
         ),
       )
