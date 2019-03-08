@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:v2ex_flutter/widgets/topicList.dart';
 import 'package:v2ex_flutter/models/node.dart';
+import 'package:v2ex_flutter/pages/nodeListPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -16,7 +17,8 @@ class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0;
   var _tabList = [
     Node(id: TopicList.TopicHot, title: "热门"), 
-    Node(id: TopicList.TopicLatest, title: "最新")
+    Node(id: TopicList.TopicLatest, title: "最新"),
+    //Node(name: )
   ];
 
   Widget titleList() {
@@ -48,6 +50,14 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+  
+  void jump2NodeList() {
+    Navigator.push(context, 
+      new MaterialPageRoute(builder: (context) {
+        return new NodeListPage();
+      })
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +66,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: jump2NodeList,
+          )
+        ],
       ),
       body: Container(
         color: Color(0xFFE8E8E8),

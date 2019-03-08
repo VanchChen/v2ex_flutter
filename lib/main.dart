@@ -12,7 +12,7 @@ class V2exApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Color(0xFF1C1C1C),
+        primaryColor: Color(0xFFF0444c),
       ),
       home: HomePage(title: 'V2EX'),
     );

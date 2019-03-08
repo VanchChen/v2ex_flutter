@@ -13,6 +13,8 @@ https://www.v2ex.com/api/nodes/all.json 所有节点
 
 */
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:v2ex_flutter/models/topic.dart';
 import 'package:v2ex_flutter/models/reply.dart';
@@ -40,10 +42,16 @@ class Request {
     return [];
   }
 
-  static Future<List> topicList(int nodeID) async {
+  static Future<List> topicList(int nodeID, String nodeName) async {
     Dio dio = Dio();
-    Response<List> response = await dio.get("https://www.v2ex.com/api/topics/show.json?node_id=$nodeID");
+    Response<List> response;
+    if (nodeID > 0) {
+      response = await dio.get("https://www.v2ex.com/api/topics/show.json?node_id=$nodeID");
+    } else if (nodeName.length > 0) {
+      response =await dio.get("https://www.v2ex.com/api/topics/show.json?node_name=$nodeName");
+    }
     if (response.statusCode == 200) {
+
         //var list = [];
         //response.data.forEach((map) => list.add(Topic.fromJson(map))); 
         //return list;

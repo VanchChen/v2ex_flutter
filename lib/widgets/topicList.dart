@@ -35,7 +35,7 @@ class _TopicListState extends State<TopicList> with AutomaticKeepAliveClientMixi
     } else if (widget.nodeID == TopicList.TopicLatest) {
       _dataList = await Request.latestList();
     } else if (widget.nodeID > 0) {
-      _dataList = await Request.topicList(widget.nodeID);
+      _dataList = await Request.topicList(widget.nodeID, "");
     }
 
     setState(() {
