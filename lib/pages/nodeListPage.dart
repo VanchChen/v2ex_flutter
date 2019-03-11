@@ -34,12 +34,22 @@ class _NodeListPageState extends State<NodeListPage> {
   @override
   Widget build(BuildContext context) {
     Widget nodeCard(Node node) {
+      double widgetWidth = (MediaQuery.of(context).size.width - 20);
+      int divider = (widgetWidth / 80).floor();
+      double width = (widgetWidth / divider).floorToDouble();
+      double height = (width / 16 * 9).floorToDouble();
       return SizedBox(
-        width: 64,
-        height: 36,
+        width: width,
+        height: height,
         child: Card(
-          child: Center(
-            child: Text(node.title),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              node.title,
+              style: TextStyle(
+                fontSize: 10,
+              ),
+            ),
           ),
         ),
       );
