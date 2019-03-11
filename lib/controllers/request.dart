@@ -24,9 +24,7 @@ class Request {
     Dio dio = Dio();
     Response<List> response = await dio.get("https://www.v2ex.com/api/topics/hot.json");
     if (response.statusCode == 200) {
-        var list = [];
-        response.data.forEach((map) => list.add(Topic.fromJson(map))); 
-        return list;
+        return response.data.map((topic) => Topic.fromJson(topic)).toList();
     }
     return [];
   } 
@@ -35,9 +33,7 @@ class Request {
     Dio dio = Dio();
     Response<List> response = await dio.get("https://www.v2ex.com/api/topics/latest.json");
     if (response.statusCode == 200) {
-        var list = [];
-        response.data.forEach((map) => list.add(Topic.fromJson(map))); 
-        return list;
+        return response.data.map((topic) => Topic.fromJson(topic)).toList();
     }
     return [];
   }
@@ -51,10 +47,7 @@ class Request {
       response =await dio.get("https://www.v2ex.com/api/topics/show.json?node_name=$nodeName");
     }
     if (response.statusCode == 200) {
-
-        //var list = [];
-        //response.data.forEach((map) => list.add(Topic.fromJson(map))); 
-        //return list;
+      return response.data.map((topic) => Topic.fromJson(topic)).toList();
     }
     return [];
   }

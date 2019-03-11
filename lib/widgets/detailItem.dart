@@ -37,6 +37,7 @@ class DetailItemState extends State<DetailItemWidget> {
       avatar = widget.topic.avatar;
       index = 0;
     }
+    avatar = "https:" + avatar;
 
     var dateString = Date.convertTimestamp2String(date);
 

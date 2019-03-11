@@ -24,6 +24,7 @@ dependencies:
   flutter_html: ^0.9.4
   cached_network_image: ^0.6.0+1
   webview_flutter: ^0.3.3+1
+  shared_preferences: ^0.5.1+1
 
 dev_dependencies:
   flutter_test:

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:v2ex_flutter/widgets/listItem.dart';
 import 'package:v2ex_flutter/controllers/request.dart';
+import 'package:v2ex_flutter/models/node.dart';
 
 class TopicList extends StatefulWidget {
-  static const int TopicHot = -1;
-  static const int TopicLatest = -2;
-
   TopicList({Key key, this.nodeID}) : super(key: key);
 
   final int nodeID;
@@ -30,9 +28,9 @@ class _TopicListState extends State<TopicList> with AutomaticKeepAliveClientMixi
 
   Future<Null> _refresh() async {
     var _dataList;
-    if (widget.nodeID == TopicList.TopicHot) {
+    if (widget.nodeID == Node.HotID) {
       _dataList = await Request.hotList();
-    } else if (widget.nodeID == TopicList.TopicLatest) {
+    } else if (widget.nodeID == Node.LatestID) {
       _dataList = await Request.latestList();
     } else if (widget.nodeID > 0) {
       _dataList = await Request.topicList(widget.nodeID, "");

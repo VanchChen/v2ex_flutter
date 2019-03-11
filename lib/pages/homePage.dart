@@ -16,8 +16,8 @@ class _HomePageState extends State<HomePage> {
   var _pageController = PageController();
   var _selectedIndex = 0;
   var _tabList = [
-    Node(id: TopicList.TopicHot, title: "热门"), 
-    Node(id: TopicList.TopicLatest, title: "最新"),
+    Node(id: Node.HotID, title: "热门"), 
+    Node(id: Node.LatestID, title: "最新"),
     //Node(name: )
   ];
 
