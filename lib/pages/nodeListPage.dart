@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:v2ex_flutter/controllers/preference.dart';
 import 'package:v2ex_flutter/models/node.dart';
+import 'package:v2ex_flutter/controllers/request.dart';
 
 class NodeListPage extends StatefulWidget {
   @override
@@ -9,11 +10,17 @@ class NodeListPage extends StatefulWidget {
 
 class _NodeListPageState extends State<NodeListPage> {
   List<Node> nodeList = [];
+  List<Node> remainNodeList = [];
 
   void updateNodeList() async {
     var newList = await Preference.nodeList();
+    var allList = await Request.allNodeList();
     setState(() {
       nodeList = newList;
+      remainNodeList = allList;
+      // allList.forEach((node) => 
+      //   if ()
+      // );
     });
   }
 
@@ -26,13 +33,21 @@ class _NodeListPageState extends State<NodeListPage> {
 
   @override
   Widget build(BuildContext context) {
-    var gridList = nodeList.map(
-      (node) => Card(
-        child: Center(
-          child: Text(node.title),
+    Widget nodeCard(Node node) {
+      return SizedBox(
+        width: 64,
+        height: 36,
+        child: Card(
+          child: Center(
+            child: Text(node.title),
+          ),
         ),
-      )
-    ).toList();
+      );
+    }
+
+    var gridList = nodeList.map((node) => nodeCard(node)).toList();
+
+    var gridRemainList = remainNodeList.map((node) => nodeCard(node)).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -40,22 +55,16 @@ class _NodeListPageState extends State<NodeListPage> {
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-        child: Column(
+        child: ListView(
           children: <Widget>[
             titleWidget("我的分类"),
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 6,
-              childAspectRatio: 16/9,
+            Wrap(
               children: gridList,
             ),
             Container(height: 20,),
             titleWidget("点击添加到分类"),
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 6,
-              childAspectRatio: 16/9,
-              children: gridList,
+            Wrap(
+              children: gridRemainList,
             ),
           ],
         ),
@@ -64,16 +73,13 @@ class _NodeListPageState extends State<NodeListPage> {
   }
 
   Widget titleWidget(String title) {
-    return Container(
-      width: double.infinity,
-      child: Text(
-        title, 
-        style: TextStyle(
-          color: Colors.brown,
-          fontSize: 12,
-        ), 
-        textAlign: TextAlign.left
-      )
+    return Text(
+      title, 
+      style: TextStyle(
+        color: Colors.brown,
+        fontSize: 12,
+      ), 
+      textAlign: TextAlign.left
     );
   }
 }

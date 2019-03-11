@@ -5,8 +5,6 @@ https://www.v2ex.com/api/nodes/show.json?name=python  node_id 节点信息
 https://www.v2ex.com/api/members/show.json?username=Livid
 https://www.v2ex.com/api/members/show.json?id=1
 
-https://www.v2ex.com/api/nodes/all.json 所有节点
-
 /api/topics/show.json node_id node_name username 某一主题下的帖子 p 页码
 
 /api/replies/show.json topic_id 某一帖子的回复
@@ -18,8 +16,18 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:v2ex_flutter/models/topic.dart';
 import 'package:v2ex_flutter/models/reply.dart';
+import 'package:v2ex_flutter/models/node.dart';
 
 class Request {
+  static Future<List> allNodeList() async {
+    Dio dio = Dio();
+    Response<List> response = await dio.get("https://www.v2ex.com/api/nodes/all.json");
+    if (response.statusCode == 200) {
+        return response.data.map((node) => Node.fromJson(node)).toList();
+    }
+    return [];
+  } 
+
   static Future<List> hotList() async {
     Dio dio = Dio();
     Response<List> response = await dio.get("https://www.v2ex.com/api/topics/hot.json");
@@ -44,7 +52,7 @@ class Request {
     if (nodeID > 0) {
       response = await dio.get("https://www.v2ex.com/api/topics/show.json?node_id=$nodeID");
     } else if (nodeName.length > 0) {
-      response =await dio.get("https://www.v2ex.com/api/topics/show.json?node_name=$nodeName");
+      response = await dio.get("https://www.v2ex.com/api/topics/show.json?node_name=$nodeName");
     }
     if (response.statusCode == 200) {
       return response.data.map((topic) => Topic.fromJson(topic)).toList();
