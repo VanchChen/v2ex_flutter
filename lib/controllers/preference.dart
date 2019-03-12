@@ -25,4 +25,16 @@ class Preference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setStringList("NodeList", nodeList.map((node) => jsonEncode(node)).toList());
   }
+
+  static Future<List<Node>> allNodeList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> jsonList = prefs.getStringList("AllNodeList");
+    if (jsonList == null) return [];
+    return jsonList.map((json) => Node.fromJson(jsonDecode(json))).toList();
+  }
+
+  static Future<bool> setALLNodeList(List<Node> nodeList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setStringList("AllNodeList", nodeList.map((node) => jsonEncode(node)).toList());
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:v2ex_flutter/widgets/topicList.dart';
-import 'package:v2ex_flutter/models/node.dart';
 import 'package:v2ex_flutter/pages/nodeListPage.dart';
+import 'package:v2ex_flutter/controllers/preference.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -15,11 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _pageController = PageController();
   var _selectedIndex = 0;
-  var _tabList = [
-    Node(id: Node.HotID, title: "热门"), 
-    Node(id: Node.LatestID, title: "最新"),
-    //Node(name: )
-  ];
+  var _tabList = [];
 
   Widget titleList() {
     return ListView.builder(
@@ -50,17 +46,16 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-  
-  void jump2NodeList() {
-    Navigator.push(context, 
-      new MaterialPageRoute(builder: (context) {
-        return new NodeListPage();
-      })
-    );
+
+  void updateTabList() async {
+    _tabList = await Preference.nodeList();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    updateTabList();
+
     List<TopicList> _tabPageList = _tabList.map((node) => TopicList(nodeID: node.id)).toList();
 
     return Scaffold(
@@ -69,7 +64,13 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.list),
-            onPressed: jump2NodeList,
+            onPressed: () {
+              Navigator.push(context, 
+                MaterialPageRoute(builder: (context) {
+                  return NodeListPage();
+                })
+              );
+            }
           )
         ],
       ),
