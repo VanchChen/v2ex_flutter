@@ -36,9 +36,11 @@ class _TopicListState extends State<TopicList> with AutomaticKeepAliveClientMixi
       _dataList = await Request.topicList(widget.nodeID, "");
     }
 
-    setState(() {
-      _itemList =_dataList;
-    });
+    if (this.mounted) {
+      setState(() {
+        _itemList =_dataList;
+      });
+    }
   }
 
   @override

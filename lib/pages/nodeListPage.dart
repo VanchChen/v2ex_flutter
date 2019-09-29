@@ -22,15 +22,17 @@ class _NodeListPageState extends State<NodeListPage> {
       Preference.setALLNodeList(allList);
     }
 
-    setState(() {
-      nodeList = newList;
-      remainNodeList = [];
-      for (Node node in allList) {
-        if (!newList.contains(node)) {
-          remainNodeList.add(node);
+    if (this.mounted) {
+      setState(() {
+        nodeList = newList;
+        remainNodeList = [];
+        for (Node node in allList) {
+          if (!newList.contains(node)) {
+            remainNodeList.add(node);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   @override

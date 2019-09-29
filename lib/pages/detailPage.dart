@@ -22,9 +22,11 @@ class _DetailPageState extends State<DetailPage> {
   Future<Null> _refresh() async {
     var _dataList = await Request.topicReplyList(widget.topic.id);
     
-    setState(() {
-      _itemList = _dataList;
-    });
+    if (this.mounted) {
+      setState(() {
+        _itemList = _dataList;
+      });
+    }
   }
 
   @override
